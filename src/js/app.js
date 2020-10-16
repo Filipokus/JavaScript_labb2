@@ -19,20 +19,89 @@ const news = [
     },
 ]
 
-/** 
- * 
- * This is where you add code that will manipulate index.html!
- * 
- * When you open index.html in your browser, this javascript file will be run once. This javascript file is loaded via the script tag in index.html.
- * 
- * Most of what you need is in the lecture slides! For the stuff that isn't, there are very strong hints in the lecture slides at least. 
- * 
- * You can also figure most things out with the MDN docs. 
- * 
- * Or, by using chrome devtools and debugger statements. 
- * 
- * 
- * Good luck :) 
- */
+document.querySelector('#ex01').textContent = 'DONE!'
+document.querySelector('.ex02').className = 'red'
+document.querySelector('blockquote').textContent = "You don't know what it's like, you don't have a clue - if you did you'd find yourself DOING THE SAME THING TOO!"
+addItemToList('shopping-list', 'Milk')
+getNews(news.length)
 
- console.log('js loaded!')
+function addItemToList(listName, newItem) {
+    const ul = document.getElementById(listName)
+    const li = document.createElement('li')
+    li.appendChild(document.createTextNode(newItem))
+    ul.appendChild(li)
+}
+
+function getNews(numberOfArticles){
+    for(let i = 0; i < numberOfArticles; i++){
+        getArticle(i)
+    }
+}
+
+function getArticle(articleNumber) {
+    let newArticle = document.createElement('div')
+    newArticle.className = 'article'
+    newArticle.appendChild(getArticleHeadline(articleNumber))
+    newArticle.appendChild(getArticleAuthor(articleNumber))
+    newArticle.appendChild(getArticleSummary(articleNumber))
+    const link = news[articleNumber].href
+
+    let clickableLink = document.createElement('a')
+    clickableLink.setAttribute('href', link)
+    let buttonReadMore = document.createElement('button')
+    buttonReadMore.className = 'newsButton'
+    buttonReadMore.textContent = 'Click to read full article'
+    clickableLink.appendChild(buttonReadMore)
+    newArticle.appendChild(clickableLink)
+
+    document.getElementById('news').appendChild(newArticle)
+}
+
+function getArticleHeadline(articleNumber){
+    const newHeadline = document.createElement('h2')
+    const headline = document.createTextNode(news[articleNumber].headline)
+    newHeadline.appendChild(headline)
+
+    return newHeadline
+}
+
+function getArticleAuthor(articleNumber){
+    const newAuthor = document.createElement('p')
+    let author = ''
+
+    if(news[articleNumber].author.length > 0){
+        author = document.createTextNode('Written by: ' + news[articleNumber].author)
+    }
+    else{
+        author = document.createTextNode('Unknown Author')
+    }
+
+    newAuthor.appendChild(author)
+    return newAuthor
+}
+
+function getArticleSummary(articleNumber){
+    const newSummary = document.createElement('p')
+    const summary = document.createTextNode(news[articleNumber].summary)
+    newSummary.appendChild(summary)
+    return newSummary
+}
+
+let numberOfClicks = 0;
+document.querySelector('main').addEventListener("click", displayClicks)
+
+function displayClicks() {
+    numberOfClicks++
+    document.getElementById('click-counter').innerHTML = numberOfClicks
+}
+
+ document.querySelector('button:not(.newsButton)').addEventListener("click", disableButton)
+ function disableButton() {
+     document.querySelector('button:not(.newsButton)').disabled = true
+ }
+
+ document.getElementById("link-to-svt").addEventListener("click", function(event){
+    event.preventDefault()
+  })
+
+  document.querySelector('img').setAttribute('src', 'https://images.unsplash.com/photo-1573224903788-6e0ece7bb24b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=745&q=80')
